@@ -11,16 +11,25 @@ layout: default
                 A well known fact within the animal kingdom is that those who posess a wide vision are known as 'prey', and those with a narrow vision are known as 'predators'.
             </p>
             <p>
-                It is a troubling fact that a small subset of programmers have evolved to have a wide vision, sometimes to the extent where they require expensive curved monitors that stretch around their head just to meet the constraints of their flawed design.
+                It is a troubling fact that a small subset of programmers have evolved to have a wide vision, sometimes to the extent where they require expensive curved monitors that stretch around their heads just to meet the constraints of their flawed biology.
             </p>
             <p>
                 WoukieNet is a paradise for programmers that don't consider themselves to be part of this subset. By entering the site, you acknowledge that you accept 4:3 as the god-given aspect ratio.
             </p>
         </div>
-        <button class="btn btn-large btn-primary" type="submit">Acknowledge</button>
+
+        <button class="btn btn-large btn-primary" type="submit" onclick="acknowledge()">
+            Acknowledge
+        </button>
         <hr />
         <p>
             &copy; WoukieNet 2025
         </p>
     </div>
 </div>
+
+<script>
+    if (document.cookie.indexOf('acknowledged=true') > -1) {
+        window.location.href = '/home';
+    }
+</script>

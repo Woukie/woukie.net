@@ -59,6 +59,23 @@
     <section>
         {{ content }}
     </section>
+    <script>
+        if (document.cookie.indexOf('acknowledged=true') === -1 && window.location.pathname !== '/') {
+            window.location.href = '/';
+        }
+
+        function unacknowledge() {
+            document.cookie = "acknowledged=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+            window.location.href = '/';
+            return false;
+        }
+
+        function acknowledge() {
+            window.location.href = '/home';
+            document.cookie = "acknowledged=true; expires=Fri, 31 Dec 9999 23:59:59 GMT";
+            return false;
+        }
+    </script>
     <script src="http://code.jquery.com/jquery.js"></script>
     <script src="/bootstrap/js/bootstrap.min.js"></script>
 </body>
