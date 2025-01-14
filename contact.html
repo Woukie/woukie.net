@@ -1,0 +1,172 @@
+---
+title: WoukieNet | Blue Oasis 2025
+permalink: /contact
+layout: default
+---
+
+<div class="container" style="margin-left: auto; margin-right: auto;">
+  {% include navbar.html %}
+  {% include title.html %}
+  <style>
+    .comment {
+      word-wrap: break-word;
+    }
+
+    .timestamp {
+      float: right;
+    }
+  </style>
+  <div class="lead">
+    <h1>Contact</h1>
+    <p>
+      I have a much higher chance of responding to you if you leave a comment on this page first. If you're a recruiter, this is not the best way to contact me.
+    </p>
+    <ul>
+      <li>
+        Email:
+        <a href="mailto://admin@woukie.net">admin@woukie.net</a>
+      </li>
+      <li>Discord: Woukie</li>
+    </ul>
+    <h2>Comments</h2>
+    <div>
+      <!-- Comment Form -->
+      <form id="comment-form">
+        <input
+          type="text"
+          id="name"
+          rows="1"
+          name="name"
+          maxlength="25"
+          required=""
+          class="input-block-level"
+          placeholder="Username"
+          style="margin-left: 0;"
+          data-ddg-inputtype="credentials.username">
+        <textarea
+          type="text"
+          id="comment"
+          name="comment"
+          maxlength="700"
+          rows="5"
+          required=""
+          class="input-block-level"
+          placeholder="Comment"></textarea>
+        <button
+          type="submit"
+          id="send-comment"
+          class="btn btn-primary">
+          Submit Comment
+        </button>
+      </form>
+
+      <!-- Comments -->
+      <div id="comments-section"></div>
+    </div>
+  </div>
+  <hr/>
+  <p>
+    &copy; WoukieNet 2025
+  </p>
+</div>
+
+<script>
+  const commentForm = document.getElementById("comment-form");
+  const commentSection = document.getElementById("comments-section");
+  const endpoint = "https://woukienet.netlify.app/comments";
+  
+  let comments = [];
+  
+  function displayComments(newComments, append) {
+  if (append) {
+    comments.push(newComments);
+  } else {
+    comments = newComments;
+  }
+  commentSection.innerHTML = "";
+  
+  comments.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+  
+  comments.forEach((comment) => {
+      commentSection.appendChild(getCommentElement(comment));
+    });
+  }
+  
+  function getCommentElement(comment) {
+    const commentWrapper = document.createElement("div");
+    commentWrapper.classList.add("comment-wrapper");
+    
+    const commentElement = document.createElement("p");
+    commentElement.classList.add("comment");
+    commentElement.innerHTML = `<b>${comment.name}:</b> ${comment.comment}`;
+    
+    const now = Date.now();
+    const then = new Date(comment.timestamp).getTime();
+    
+    const timestampElement = document.createElement("p");
+    timestampElement.classList.add("timestamp");
+    timestampElement.innerHTML = `<sup>${niceTime(now - then)}</sup>`;
+    
+    commentWrapper.appendChild(timestampElement);
+    commentWrapper.appendChild(commentElement);
+    
+    return commentWrapper;
+  }
+  
+  function niceTime(diffInMilliseconds) {
+  const second = 1000;
+  const minute = second * 60;
+  const hour = minute * 60;
+  const day = hour * 24;
+  
+  let timeString;
+  if (diffInMilliseconds < minute) {
+    const seconds = Math.floor(diffInMilliseconds / second);
+    timeString = `${seconds} sec${seconds > 1 ? "s" : ""}`;
+  } else if (diffInMilliseconds < hour) {
+    const minutes = Math.floor(diffInMilliseconds / minute);
+    timeString = `${minutes} min${minutes > 1 ? "s" : ""}`;
+  } else if (diffInMilliseconds < day) {
+    const hours = Math.floor(diffInMilliseconds / hour);
+    timeString = `${hours} hour${hours > 1 ? "s" : ""}`;
+  } else {
+    const days = Math.floor(diffInMilliseconds / day);
+    timeString = `${days} day${days > 1 ? "s" : ""}`;
+  }
+  return timeString;
+  }
+  
+  commentForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    
+    const nameElement = document.getElementById("name");
+    const commentElement = document.getElementById("comment");
+  
+    const name = document.getElementById("name").value;
+    const comment = document.getElementById("comment").value;
+    
+    nameElement.value = "";
+    nameElement.disabled = true;
+  
+    commentElement.value = "";
+    commentElement.disabled = true;
+    
+    const response = await fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, comment }),
+    });
+    
+    if (response.ok) {
+      const newComment = await response.json();
+      displayComments(newComment, true);
+      window.location.reload();
+    } else {
+      alert("Error submitting comment. Please try again.");
+    }
+  });
+  
+  fetch(endpoint)
+  .then((response) => response.json())
+  .then((comments) => displayComments(comments));
+</script>
