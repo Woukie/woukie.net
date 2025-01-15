@@ -10,63 +10,62 @@ layout: default
   <div class="lead">
     <h1>The Internet Interloper project</h1>
     <p>
-      The Internet Interloper project lets you leave notes on any page of the internet, visible to anyone else using the extension.
+      Interlopers leave notes around the internet for other interlopers to find. Notes last forever and can be seen by anyone with the extension installed.
     </p>
     <p>
       To add a note, right click anywhere on a page and select '<b>Add Note</b>'.
     </p>
-    <hr/>
-    <form>
+    <p>
+      To change your username, come back to this page with the extension installed.
+    </p>
+    <form
+      hidden="true"
+      class="interlopers-only"
+      action="https://woukienet.com/account/set-username"
+      method="post">
+      <hr/>
       <h2>
-        Update username and auth code
+        Update username
       </h2>
       <label for="username">Username:</label>
       <input
+        style="margin-left: 0px; margin-bottom: 18px;"
         type="text"
-        id="username"
+        id="interloper-username-input"
         name="username"
         value="Anonymous" />
-      <label for="auth">Auth code:</label>
-      <input
-        type="password"
-        id="auth"
-        name="auth"
-        value="aaL3nU3333ans" />
-      <p>
-        If you steal/guess someone else's auth code and put it here, you can post as them. So please don't give away your auth code or make it easy to guess.
-      </p>
-      <button type="submit" class="btn btn-primary">
-        Submit
+      <br/>
+      <button
+        id="interloper-username-submit"
+        type="submit"
+        class="btn btn-primary">
+        Apply
       </button>
     </form>
     <hr/>
     <h2>
-      How it works
-    </h2>
-    <ul>
-      <li>
-        When visiting a page, the extension asks the backend for a list of notes for the URL. If there are notes, the extension displays them on the page.
-      </li>
-      <li>
-        When adding a note, the extension sends the note to the backend, which saves it in a database. Each note has a position, text, url, and a userID, obtained from an auth code sent with the request.
-      </li>
-      <li>
-        The user data stored on the backend is an ID, auth code and username.
-      </li>
-    </ul>
-    <hr/>
-    <h2>
-      Why so blue?
+      Become an Interloper
     </h2>
     <p>
-      It's easy to program and looks good.
+      Interlopers don't need to sign up to anything to leave notes. Notes can be left without compromising privacy.
     </p>
+    <ul>
+      <li>
+        <a href="https://addons.mozilla.org/en-US/firefox/addon/internet-interloper/">Firefox</a>
+      </li>
+      <li>
+        <a href="https://chrome.google.com/webstore/detail/internet-interloper/ohjgjgkpk>">Chrome</a>
+      </li>
+      <li>
+        <a href="https://microsoftedge.microsoft.com/addons/detail/internet-interloper/ohjgjgkpk">Edge</a>
+      </li>
+    </ul>
     <hr/>
     <h2>
       Policy
     </h2>
     <p>
-      Interlopers have the freedom to share anything with the world, so long as it's within the bounds of the law. If an interloper wishes to make bomb threats against the White House, they use email, not the Internet Interloper project.
+      Interlopers have the freedom to share many things with the world. But if an interloper wishes to make bomb threats against the White House, they use email, not the Internet Interloper project.
     </p>
   </div>
 
