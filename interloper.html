@@ -8,25 +8,53 @@ layout: default
   {% include navbar.html %}
   {% include title.html %}
   <div class="lead">
-    <h1>Welcome to the Internet Interloper project</h1>
+    <h1>The Internet Interloper project</h1>
     <p>
-      The Internet Interloper project lets you anonymously leave notes on any page on the internet, visible to anyone else using the extension on the same page.
+      The Internet Interloper project lets you leave notes on any page of the internet, visible to anyone else using the extension.
     </p>
     <p>
-      To add a note, right click on the page and select '<b>Add Note</b>'.
+      To add a note, right click anywhere on a page and select '<b>Add Note</b>'.
     </p>
+    <hr/>
+    <form>
+      <h2>
+        Update username and auth code
+      </h2>
+      <label for="username">Username:</label>
+      <input
+        type="text"
+        id="username"
+        name="username"
+        value="Anonymous" />
+      <label for="auth">Auth code:</label>
+      <input
+        type="password"
+        id="auth"
+        name="auth"
+        value="aaL3nU3333ans" />
+      <p>
+        If you steal/guess someone else's auth code and put it here, you can post as them. So please don't give away your auth code or make it easy to guess.
+      </p>
+      <button type="submit" class="btn btn-primary">
+        Submit
+      </button>
+    </form>
+    <hr/>
     <h2>
       How it works
     </h2>
-    <p>
-      When visiting a page, the extension asks the backend for a list of notes for the URL. If there are notes, the extension displays them on the page.
-    </p>
-    <p>
-      You may have noticed that you can delete your own notes despite not having an account system. The extension uses the browser's local storage to store a unique deletion code for each note, don't reset your browser data if you want to delete your notes.
-    </p>
-    <p>
-      If you don't delete your notes, they stay forever, so be carefull what you put on them.
-    </p>
+    <ul>
+      <li>
+        When visiting a page, the extension asks the backend for a list of notes for the URL. If there are notes, the extension displays them on the page.
+      </li>
+      <li>
+        When adding a note, the extension sends the note to the backend, which saves it in a database. Each note has a position, text, url, and a userID, obtained from an auth code sent with the request.
+      </li>
+      <li>
+        The user data stored on the backend is an ID, auth code and username.
+      </li>
+    </ul>
+    <hr/>
     <h2>
       Why so blue?
     </h2>
@@ -34,6 +62,9 @@ layout: default
       It's easy to program and looks good.
     </p>
     <hr/>
+    <h2>
+      Policy
+    </h2>
     <p>
       Interlopers have the freedom to share anything with the world, so long as it's within the bounds of the law. If an interloper wishes to make bomb threats against the White House, they use email, not the Internet Interloper project.
     </p>
