@@ -42,5 +42,17 @@ layout: default
     <p></p>
     <hr/>
     <p>UPDATE: I just did an entire search for latest.txt instead of latest.log. Kill me.</p>
+    <hr/>
+    <p>UPDATE: I found a later archive of the source code of the plugin, and judging by the following lines in the resetWorlds function, I can make assumptions about the layout of the server files. The world is likely to contain either 'active' or 'arena' and be in a folder called 'worlds'.</p>
+    <div class="well" style="white-space: pre-wrap;">
+      player.teleport(Bukkit.getWorld("active").getSpawnLocation());
+      ...
+      if (listFile.toString().startsWith(".\\arena")) {
+      ...
+      String worldName = "arena_" + System.currentTimeMillis();
+      ...
+      unzip(... + "/worlds/arena.zip", newArena.toString());
+    </code>
+    <p>So off to do a search for that...</p>
   </div>
 </div>
