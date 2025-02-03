@@ -1,21 +1,14 @@
 <div class="navbar navbar-inverse navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container" style="margin-left: auto; margin-right: auto;">
-      <button
-        type="button"
-        class="btn btn-navbar"
-        data-toggle="collapse"
-        data-target=".nav-collapse"></button>
+      <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"></button>
       <a class="brand" href="/">Blue Oasis 2025</a>
       <div class="nav-collapse collapse">
         <ul class="nav">
           {% for navitem in site.data.navbar_pages %}
-            <li
-              {% if page.permalink == navitem[1] %}
-              class="active"
-              {% endif %}>
-              <a href="{{ navitem[1] }}">{{ navitem[0] }}</a>
-            </li>
+          <li {% if page.permalink==navitem[1] %} class="active" {% endif %}>
+            <a href="{{ navitem[1] }}">{{ navitem[0] }}</a>
+          </li>
           {% endfor %}
         </ul>
       </div>
@@ -28,4 +21,4 @@
       </div>
     </div>
   </div>
-</div></br>
+</div><br />
