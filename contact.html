@@ -73,67 +73,54 @@ layout: default
 <script>
   const commentForm = document.getElementById("comment-form");
   const commentSection = document.getElementById("comments-section");
-  const endpoint = "https://woukienet.netlify.app/comments";
+  const endpoint = "https://comment-spam.netlify.app/.netlify/functions/";
   
-  let comments = [];
-  
-  function displayComments(newComments, append) {
-  if (append) {
-    comments.push(newComments);
-  } else {
-    comments = newComments;
-  }
-  commentSection.innerHTML = "";
-  
-  comments.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-  
-  comments.forEach((comment) => {
-      commentSection.appendChild(getCommentElement(comment));
+  function setComments(comments) {
+    console.log(comments)
+
+    commentSection.innerHTML = "";
+    comments.forEach((comment) => {
+      const commentWrapper = document.createElement("div");
+      commentWrapper.classList.add("comment-wrapper");
+      
+      const commentElement = document.createElement("p");
+      commentElement.classList.add("comment");
+      commentElement.innerHTML = `<b>${comment.username}:</b> ${comment.message}`;
+      
+      const now = Date.now();
+      const then = new Date(comment.datePosted).getTime();
+      
+      const timestampElement = document.createElement("p");
+      timestampElement.classList.add("timestamp");
+      timestampElement.innerHTML = `<sup>${niceTime(now - then)}</sup>`;
+      
+      commentWrapper.appendChild(timestampElement);
+      commentWrapper.appendChild(commentElement);
+      commentSection.appendChild(commentWrapper);
     });
   }
   
-  function getCommentElement(comment) {
-    const commentWrapper = document.createElement("div");
-    commentWrapper.classList.add("comment-wrapper");
-    
-    const commentElement = document.createElement("p");
-    commentElement.classList.add("comment");
-    commentElement.innerHTML = `<b>${comment.name}:</b> ${comment.comment}`;
-    
-    const now = Date.now();
-    const then = new Date(comment.timestamp).getTime();
-    
-    const timestampElement = document.createElement("p");
-    timestampElement.classList.add("timestamp");
-    timestampElement.innerHTML = `<sup>${niceTime(now - then)}</sup>`;
-    
-    commentWrapper.appendChild(timestampElement);
-    commentWrapper.appendChild(commentElement);
-    
-    return commentWrapper;
-  }
-  
   function niceTime(diffInMilliseconds) {
-  const second = 1000;
-  const minute = second * 60;
-  const hour = minute * 60;
-  const day = hour * 24;
-  
-  let timeString;
-  if (diffInMilliseconds < minute) {
-    const seconds = Math.floor(diffInMilliseconds / second);
-    timeString = `${seconds} sec${seconds > 1 ? "s" : ""}`;
-  } else if (diffInMilliseconds < hour) {
-    const minutes = Math.floor(diffInMilliseconds / minute);
-    timeString = `${minutes} min${minutes > 1 ? "s" : ""}`;
-  } else if (diffInMilliseconds < day) {
-    const hours = Math.floor(diffInMilliseconds / hour);
-    timeString = `${hours} hour${hours > 1 ? "s" : ""}`;
-  } else {
-    const days = Math.floor(diffInMilliseconds / day);
-    timeString = `${days} day${days > 1 ? "s" : ""}`;
-  }
-  return timeString;
+    const second = 1000;
+    const minute = second * 60;
+    const hour = minute * 60;
+    const day = hour * 24;
+    
+    let timeString;
+    if (diffInMilliseconds < minute) {
+      const seconds = Math.floor(diffInMilliseconds / second);
+      timeString = `${seconds} sec${seconds > 1 ? "s" : ""}`;
+    } else if (diffInMilliseconds < hour) {
+      const minutes = Math.floor(diffInMilliseconds / minute);
+      timeString = `${minutes} min${minutes > 1 ? "s" : ""}`;
+    } else if (diffInMilliseconds < day) {
+      const hours = Math.floor(diffInMilliseconds / hour);
+      timeString = `${hours} hour${hours > 1 ? "s" : ""}`;
+    } else {
+      const days = Math.floor(diffInMilliseconds / day);
+      timeString = `${days} day${days > 1 ? "s" : ""}`;
+    }
+    return timeString;
   }
   
   commentForm.addEventListener("submit", async (event) => {
@@ -141,6 +128,7 @@ layout: default
     
     const nameElement = document.getElementById("name");
     const commentElement = document.getElementById("comment");
+    const submitElement = document.getElementById("send-comment");
   
     const name = document.getElementById("name").value;
     const comment = document.getElementById("comment").value;
@@ -150,23 +138,27 @@ layout: default
   
     commentElement.value = "";
     commentElement.disabled = true;
+
+    submitElement.disabled = true;
     
-    const response = await fetch(endpoint, {
+    const response = await fetch(endpoint + "write_comment", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, comment }),
+      body: JSON.stringify({ site: "woukie.net", username: name, message: comment }),
     });
     
     if (response.ok) {
       const newComment = await response.json();
-      displayComments(newComment, true);
       window.location.reload();
     } else {
       alert("Error submitting comment. Please try again.");
     }
   });
   
-  fetch(endpoint)
-  .then((response) => response.json())
-  .then((comments) => displayComments(comments));
+  fetch(endpoint+"read_comments", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ site: "woukie.net", page: 0 }),
+  }).then((response) => response.json())
+    .then((comments) => setComments(comments));
 </script>
