@@ -75,7 +75,8 @@
       }
 
       function acknowledge() {
-        window.location.href = localStorage.getItem("acknowledgeRedirectPage");
+        var redirectPage = localStorage.getItem("acknowledgeRedirectPage");
+        window.location.href = redirectPage || "/home";
         document.cookie = "acknowledged=true; expires=Fri, 31 Dec 9999 23:59:59 GMT";
         return false;
       }
